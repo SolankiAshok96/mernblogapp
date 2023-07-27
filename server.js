@@ -4,7 +4,7 @@ const morgan = require("morgan")
 const colors = require("colors")
 const dotenv = require('dotenv')
 const connectDB = require("./config/db")
-
+const path = require("path")
 const app = express();
 
 
@@ -18,8 +18,16 @@ app.use(morgan('dev'))
 app.use(cors())
 
  
+
+
  require("./routes/user.Router")(app)
  require("./routes/blog.Router")(app)
+
+ app.use(express.static(path.join(__dirname,'./client/build' )))  
+app.get("*", function(req,res) {
+         res.sendFile(path.join(__dirname, "./client/build/index.html"))
+})
+
 const PORT = process.env.PORT ||8080;
 
 
